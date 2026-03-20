@@ -44,6 +44,37 @@ def show_dashboard():
 
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
 
+    # ===== STOCK HEALTH SUMMARY =====
+    stock_recs = results.get("stock_recommendations", pd.DataFrame())
+    if not stock_recs.empty and "Alert Type" in stock_recs.columns:
+        st.markdown('<div class="section-header">🏥 Stock Health Summary</div>', unsafe_allow_html=True)
+
+        low = len(stock_recs[stock_recs["Alert Type"] == "Low Stock"])
+        healthy = len(stock_recs[stock_recs["Alert Type"] == "Healthy"])
+        over = len(stock_recs[stock_recs["Alert Type"] == "Overstock"])
+
+        h_col1, h_col2, h_col3 = st.columns(3)
+        health_items = [
+            ("🔻", "Low Stock", str(low), "#D93025", "rgba(217,48,37,0.06)", h_col1),
+            ("✅", "Healthy", str(healthy), "#1E8E3E", "rgba(30,142,62,0.06)", h_col2),
+            ("📦", "Overstock", str(over), "#F9AB00", "rgba(249,171,0,0.06)", h_col3),
+        ]
+
+        for i, (icon, label, val, color, bg, col) in enumerate(health_items):
+            with col:
+                st.markdown(f"""
+                <div class="glass-card delay-{i+2}" style="text-align:center; padding:20px 16px;">
+                    <div style="font-size:24px; margin-bottom:4px;">{icon}</div>
+                    <div style="font-size:24px; font-weight:700; color:{color};">{val}</div>
+                    <div style="font-size:11px; color:#9AA0A6; text-transform:uppercase;
+                                letter-spacing:1px; font-weight:600; margin-top:4px;">{label}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+
     # ===== CHARTS =====
     colA, colB = st.columns(2)
 
@@ -54,7 +85,7 @@ def show_dashboard():
             st.line_chart(daily_trends.set_index("date")["revenue"])
         else:
             st.markdown("""
-            <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+            <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
                 <div style="font-size:36px; margin-bottom:8px;">📭</div>
                 <div style="font-size:13px;">Upload sales data to see revenue trends</div>
             </div>
@@ -68,7 +99,7 @@ def show_dashboard():
             st.bar_chart(category_demand.set_index("category")["revenue"])
         else:
             st.markdown("""
-            <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+            <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
                 <div style="font-size:36px; margin-bottom:8px;">📭</div>
                 <div style="font-size:13px;">Upload data to see category distribution</div>
             </div>

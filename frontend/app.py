@@ -7,6 +7,8 @@ from home import show_home
 from upload import show_upload
 from dashboard import show_dashboard
 from insights import show_insights
+from stock_alerts import show_stock_alerts
+from visualizations import show_visualizations
 import sys
 from pathlib import Path
 
@@ -17,13 +19,15 @@ if str(project_root) not in sys.path:
 
 from analytics.analytics_runner import run_analytics
 
-@st.cache_data
-def get_analytics_results():
-    return run_analytics()
-
-# Run analytics and store in session state
-if "analytics_results" not in st.session_state:
-    st.session_state.analytics_results = get_analytics_results()
+# Always run analytics fresh to ensure decision_support data is included
+# This runs once per session (Streamlit caches session_state across reruns)
+if "analytics_results" not in st.session_state or "stock_recommendations" not in st.session_state.get("analytics_results", {}):
+    st.session_state.analytics_results = run_analytics()
+# Also re-run if stock_recommendations is empty but inventory data exists
+elif st.session_state.analytics_results.get("inventory_df") is not None:
+    recs = st.session_state.analytics_results.get("stock_recommendations")
+    if recs is None or (hasattr(recs, "empty") and recs.empty):
+        st.session_state.analytics_results = run_analytics()
 
 set_layout()
 
@@ -133,3 +137,8 @@ else:
         show_trends()
     elif page == "💡 Insights":
         show_insights()
+    elif page == "🚨 Alerts":
+        show_stock_alerts()
+    elif page == "📉 Charts":
+        show_visualizations()
+

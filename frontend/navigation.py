@@ -13,10 +13,20 @@ def top_navigation():
         ("📦", "Products"),
         ("📈", "Trends"),
         ("💡", "Insights"),
+        ("🚨", "Alerts"),
+        ("📉", "Charts"),
     ]
 
     # Build columns: brand + pages + logout
-    cols = st.columns([1.4] + [1] * len(pages) + [0.9])
+    # Use container with custom CSS for horizontal scrollable nav
+    st.markdown("""
+    <style>
+    .nav-row { display:flex; align-items:center; gap:6px; padding:8px 0; flex-wrap:nowrap; }
+    .nav-row .stButton > button { min-width:0 !important; white-space:nowrap !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    cols = st.columns([1.3] + [1] * len(pages) + [1])
 
     # Brand
     with cols[0]:
@@ -25,7 +35,7 @@ def top_navigation():
             unsafe_allow_html=True,
         )
 
-    # Nav buttons with Antigravity active/inactive styling
+    # Nav buttons — icon-only for compact layout
     for i, (icon, label) in enumerate(pages):
         full_label = f"{icon} {label}"
         col_index = i + 2  # 1-indexed for CSS nth-child
@@ -43,6 +53,8 @@ def top_navigation():
                     box-shadow: 0 4px 16px rgba(50, 121, 249, 0.2) !important;
                     border: none !important;
                     font-weight: 600 !important;
+                    font-size: 12px !important;
+                    padding: 8px 6px !important;
                 }}
                 </style>
                 """, unsafe_allow_html=True)
@@ -54,6 +66,8 @@ def top_navigation():
                     border: 1px solid rgba(0, 0, 0, 0.06) !important;
                     color: #5F6368 !important;
                     border-radius: 9999px !important;
+                    font-size: 12px !important;
+                    padding: 8px 6px !important;
                 }}
                 div[data-testid="stHorizontalBlock"] > div:nth-child({col_index}) .stButton > button:hover {{
                     background: rgba(50, 121, 249, 0.06) !important;
@@ -64,7 +78,8 @@ def top_navigation():
                 </style>
                 """, unsafe_allow_html=True)
 
-            if st.button(f"{icon} {label}", key=f"nav_{label}", use_container_width=True):
+            # Use just icon for button label
+            if st.button(f"{icon}", key=f"nav_{label}", use_container_width=True, help=label):
                 st.session_state.current_page = full_label
                 st.rerun()
 
@@ -78,6 +93,8 @@ def top_navigation():
             border: 1px solid rgba(217, 48, 37, 0.12) !important;
             color: #D93025 !important;
             border-radius: 9999px !important;
+            font-size: 12px !important;
+            padding: 8px 6px !important;
         }}
         div[data-testid="stHorizontalBlock"] > div:nth-child({logout_col_index}) .stButton > button:hover {{
             background: rgba(217, 48, 37, 0.12) !important;
@@ -86,7 +103,7 @@ def top_navigation():
         }}
         </style>
         """, unsafe_allow_html=True)
-        if st.button("🚪 Logout", key="nav_logout", use_container_width=True):
+        if st.button("🚪", key="nav_logout", use_container_width=True, help="Logout"):
             st.session_state.logged_in = False
             st.session_state.current_page = "🏠 Home"
             st.rerun()

@@ -17,6 +17,7 @@ if str(project_root) not in sys.path:
 from analytics.demand_analysis import aggregate_product_demand, aggregate_category_demand, aggregate_top_products
 from analytics.trend_analysis import aggregate_daily_trends
 from analytics.kpi_calculator import compute_kpi_summary
+from decision_support.recommendations import generate_recommendations
 
 def load_processed_data():
     """
@@ -69,6 +70,16 @@ def run_analytics():
             "slow_moving_count": 0
         }
 
+    # Decision Support: stock alerts + reorder recommendations
+    if inventory_df is not None and not inventory_df.empty:
+        try:
+            results['stock_recommendations'] = generate_recommendations(inventory_df)
+        except Exception as e:
+            print(f"Warning: Decision support failed: {e}")
+            results['stock_recommendations'] = pd.DataFrame()
+    else:
+        results['stock_recommendations'] = pd.DataFrame()
+
     results['inventory_df'] = inventory_df
     results['sales_df'] = sales_df
 
@@ -79,3 +90,5 @@ if __name__ == "__main__":
     results = run_analytics()
     print("Analytics completed.")
     print(f"KPIs: {results['kpis']}")
+    if not results['stock_recommendations'].empty:
+        print(f"Stock Recommendations: {results['stock_recommendations'].shape[0]} products")
