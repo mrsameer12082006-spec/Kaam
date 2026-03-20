@@ -4,7 +4,6 @@ import sys
 
 
 def _ensure_project_root_in_path():
-    # ensure package imports work whether running from frontend/ or project root
     project_root = Path(__file__).resolve().parents[1]
     if str(project_root) not in sys.path:
         sys.path.insert(0, str(project_root))
@@ -16,7 +15,6 @@ try:
     from Ingestion import process_inventory_file, process_sales_file
     from analytics.analytics_runner import run_analytics
 except Exception:
-    # last-resort relative import
     try:
         from Ingestion import process_inventory_file, process_sales_file
         from analytics.analytics_runner import run_analytics
@@ -27,65 +25,105 @@ except Exception:
 
 
 def show_upload():
-    st.title("Upload Inventory and Sales Data")
+    st.markdown('<div class="page-title">📂 Upload Data</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="page-subtitle">Import your inventory and sales CSV/Excel files for instant analysis</div>',
+        unsafe_allow_html=True,
+    )
 
-    st.markdown("Upload CSV or Excel files for INVENTORY and SALES. Processed files will be saved in the ingestion/data/processed folder.")
+    # ===== INVENTORY UPLOAD =====
+    st.markdown('<div class="section-header">📦 Inventory File</div>', unsafe_allow_html=True)
 
-    st.markdown("## Inventory File")
-    inv_file = st.file_uploader("Drag & drop inventory file here", type=["csv", "xlsx"], key="inventory_uploader")
+    st.markdown("""
+    <div class="upload-zone">
+        <div style="text-align:center; margin-bottom:8px;">
+            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(139,92,246,0.3));">📁</span>
+        </div>
+        <div style="text-align:center; color:rgba(244,244,245,0.4); font-size:13px;">
+            Drag & drop or browse to upload your inventory file
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    inv_file = st.file_uploader(
+        "Choose inventory file",
+        type=["csv", "xlsx"],
+        key="inventory_uploader",
+        label_visibility="collapsed",
+    )
+
     if inv_file is not None:
         if process_inventory_file is None:
-            st.error("Ingestion pipeline not available (import error).")
+            st.error("⚠️ Ingestion pipeline not available (import error).")
         else:
             try:
                 cleaned = process_inventory_file(inv_file)
-                st.success("Inventory file processed successfully.")
-                st.dataframe(cleaned.head(10))
-                # Refresh analytics
+                st.success("✅ Inventory file processed successfully!")
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.dataframe(cleaned.head(10), use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
                 if run_analytics:
                     st.session_state.analytics_results = run_analytics()
-                    st.success("Analytics updated!")
+                    st.success("📊 Analytics updated!")
             except Exception as e:
-                st.error(f"Error processing inventory file: {e}")
+                st.error(f"❌ Error processing inventory file: {e}")
 
-    st.markdown("### Inventory Expected Columns")
-    st.table({
-        "Product ID": ["P001", "P002"],
-        "Product Name": ["Coffee Beans", "Green Tea"],
-        "Category": ["Beverages", "Beverages"],
-        "Quantity On Hand": [120, 80],
-        "Reorder Point": [30, 20],
-        "Unit Cost": [3.50, 2.00],
-        "Selling Price": [5.99, 3.99],
-        "Last Purchase Date": ["2026-01-10", "2026-01-12"]
-    })
+    with st.expander("📋 View Expected Inventory Columns"):
+        st.table({
+            "Product ID": ["P001", "P002"],
+            "Product Name": ["Coffee Beans", "Green Tea"],
+            "Category": ["Beverages", "Beverages"],
+            "Quantity On Hand": [120, 80],
+            "Reorder Point": [30, 20],
+            "Unit Cost": [3.50, 2.00],
+            "Selling Price": [5.99, 3.99],
+            "Last Purchase Date": ["2026-01-10", "2026-01-12"],
+        })
 
-    st.divider()
+    st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
 
-    st.markdown("## Sales File")
-    sales_file = st.file_uploader("Drag & drop sales file here", type=["csv", "xlsx"], key="sales_uploader")
+    # ===== SALES UPLOAD =====
+    st.markdown('<div class="section-header delay-2">💰 Sales File</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="upload-zone delay-2">
+        <div style="text-align:center; margin-bottom:8px;">
+            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(34,211,238,0.3));">📊</span>
+        </div>
+        <div style="text-align:center; color:rgba(244,244,245,0.4); font-size:13px;">
+            Drag & drop or browse to upload your sales file
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    sales_file = st.file_uploader(
+        "Choose sales file",
+        type=["csv", "xlsx"],
+        key="sales_uploader",
+        label_visibility="collapsed",
+    )
+
     if sales_file is not None:
         if process_sales_file is None:
-            st.error("Ingestion pipeline not available (import error).")
+            st.error("⚠️ Ingestion pipeline not available (import error).")
         else:
             try:
                 cleaned = process_sales_file(sales_file)
-                st.success("Sales file processed successfully.")
-                st.dataframe(cleaned.head(10))
-                # Refresh analytics
+                st.success("✅ Sales file processed successfully!")
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.dataframe(cleaned.head(10), use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
                 if run_analytics:
                     st.session_state.analytics_results = run_analytics()
-                    st.success("Analytics updated!")
+                    st.success("📊 Analytics updated!")
             except Exception as e:
-                st.error(f"Error processing sales file: {e}")
+                st.error(f"❌ Error processing sales file: {e}")
 
-    st.divider()
-
-    st.markdown("### Sales Expected Columns")
-    st.table({
-        "product": ["Coffee Beans", "Green Tea"],
-        "date": ["2026-01-15", "2026-01-15"],
-        "quantity": [45, 30],
-        "revenue": [675.0, 240.0],
-        "category": ["Beverages", "Beverages"]
-    })
+    with st.expander("📋 View Expected Sales Columns"):
+        st.table({
+            "product": ["Coffee Beans", "Green Tea"],
+            "date": ["2026-01-15", "2026-01-15"],
+            "quantity": [45, 30],
+            "revenue": [675.0, 240.0],
+            "category": ["Beverages", "Beverages"],
+        })
