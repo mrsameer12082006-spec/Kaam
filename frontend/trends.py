@@ -53,7 +53,7 @@ def show_trends():
         st.line_chart(daily_trends.set_index("date")[["revenue", "quantity"]])
     else:
         st.markdown("""
-        <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+        <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
             <div style="font-size:36px; margin-bottom:8px;">📭</div>
             <div style="font-size:13px;">Upload sales data to see trends</div>
         </div>
@@ -70,7 +70,7 @@ def show_trends():
         st.bar_chart(category_demand.set_index("category")[["revenue", "quantity"]])
     else:
         st.markdown("""
-        <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+        <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
             <div style="font-size:36px; margin-bottom:8px;">📭</div>
             <div style="font-size:13px;">Upload data to see category trends</div>
         </div>
@@ -87,7 +87,7 @@ def show_trends():
         st.dataframe(top_products, use_container_width=True)
     else:
         st.markdown("""
-        <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+        <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
             <div style="font-size:36px; margin-bottom:8px;">📭</div>
             <div style="font-size:13px;">Upload data to see product trends</div>
         </div>

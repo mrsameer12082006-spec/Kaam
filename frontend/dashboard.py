@@ -84,7 +84,7 @@ def show_dashboard():
         st.dataframe(top_products, use_container_width=True)
     else:
         st.markdown("""
-        <div style="text-align:center; padding:40px 20px; color:rgba(244,244,245,0.3);">
+        <div style="text-align:center; padding:40px 20px; color:#9AA0A6;">
             <div style="font-size:36px; margin-bottom:8px;">📭</div>
             <div style="font-size:13px;">Upload data to see top performing products</div>
         </div>

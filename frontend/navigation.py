@@ -1,7 +1,7 @@
 import streamlit as st
 
 def top_navigation():
-    """Render a premium horizontal top navigation bar."""
+    """Render an Antigravity-style frosted glass top navigation bar."""
 
     if "current_page" not in st.session_state:
         st.session_state.current_page = "🏠 Home"
@@ -25,7 +25,7 @@ def top_navigation():
             unsafe_allow_html=True,
         )
 
-    # Nav buttons with active/inactive styling
+    # Nav buttons with Antigravity active/inactive styling
     for i, (icon, label) in enumerate(pages):
         full_label = f"{icon} {label}"
         col_index = i + 2  # 1-indexed for CSS nth-child
@@ -37,10 +37,12 @@ def top_navigation():
                 st.markdown(f"""
                 <style>
                 div[data-testid="stHorizontalBlock"] > div:nth-child({col_index}) .stButton > button {{
-                    background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
-                    box-shadow: 0 6px 24px rgba(139,92,246,0.3), 0 0 0 1px rgba(139,92,246,0.2) !important;
-                    border-bottom: 3px solid #a78bfa !important;
+                    background: #3279F9 !important;
                     color: white !important;
+                    border-radius: 9999px !important;
+                    box-shadow: 0 4px 16px rgba(50, 121, 249, 0.2) !important;
+                    border: none !important;
+                    font-weight: 600 !important;
                 }}
                 </style>
                 """, unsafe_allow_html=True)
@@ -48,15 +50,16 @@ def top_navigation():
                 st.markdown(f"""
                 <style>
                 div[data-testid="stHorizontalBlock"] > div:nth-child({col_index}) .stButton > button {{
-                    background: rgba(255,255,255,0.03) !important;
-                    border: 1px solid rgba(255,255,255,0.06) !important;
-                    color: rgba(244,244,245,0.5) !important;
+                    background: transparent !important;
+                    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+                    color: #5F6368 !important;
+                    border-radius: 9999px !important;
                 }}
                 div[data-testid="stHorizontalBlock"] > div:nth-child({col_index}) .stButton > button:hover {{
-                    background: rgba(139,92,246,0.1) !important;
-                    border-color: rgba(139,92,246,0.3) !important;
-                    color: #e2e8f0 !important;
-                    box-shadow: 0 4px 20px rgba(139,92,246,0.15) !important;
+                    background: rgba(50, 121, 249, 0.06) !important;
+                    border-color: rgba(50, 121, 249, 0.15) !important;
+                    color: #3279F9 !important;
+                    box-shadow: 0 4px 16px rgba(50, 121, 249, 0.08) !important;
                 }}
                 </style>
                 """, unsafe_allow_html=True)
@@ -65,20 +68,21 @@ def top_navigation():
                 st.session_state.current_page = full_label
                 st.rerun()
 
-    # Logout button (red accent)
+    # Logout button (red accent, pill style)
     logout_col_index = len(pages) + 2
     with cols[-1]:
         st.markdown(f"""
         <style>
         div[data-testid="stHorizontalBlock"] > div:nth-child({logout_col_index}) .stButton > button {{
-            background: rgba(251,113,133,0.08) !important;
-            border: 1px solid rgba(251,113,133,0.2) !important;
-            color: #fb7185 !important;
+            background: rgba(217, 48, 37, 0.06) !important;
+            border: 1px solid rgba(217, 48, 37, 0.12) !important;
+            color: #D93025 !important;
+            border-radius: 9999px !important;
         }}
         div[data-testid="stHorizontalBlock"] > div:nth-child({logout_col_index}) .stButton > button:hover {{
-            background: rgba(251,113,133,0.18) !important;
-            border-color: rgba(251,113,133,0.4) !important;
-            box-shadow: 0 4px 24px rgba(251,113,133,0.15) !important;
+            background: rgba(217, 48, 37, 0.12) !important;
+            border-color: rgba(217, 48, 37, 0.25) !important;
+            box-shadow: 0 4px 16px rgba(217, 48, 37, 0.1) !important;
         }}
         </style>
         """, unsafe_allow_html=True)
@@ -89,7 +93,7 @@ def top_navigation():
 
     # Separator
     st.markdown(
-        "<hr style='margin: 6px 0 28px 0; border-top: 1px solid rgba(255,255,255,0.04);'>",
+        "<hr style='margin: 8px 0 32px 0; border-top: 1px solid rgba(0, 0, 0, 0.05);'>",
         unsafe_allow_html=True,
     )
 

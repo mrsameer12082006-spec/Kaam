@@ -55,9 +55,9 @@ def show_products():
         st.dataframe(product_demand, use_container_width=True)
     else:
         st.markdown("""
-        <div style="text-align:center; padding:48px 20px; color:rgba(244,244,245,0.3);">
+        <div style="text-align:center; padding:48px 20px; color:#9AA0A6;">
             <div style="font-size:44px; margin-bottom:10px;">📭</div>
-            <div style="font-size:15px; font-weight:600; color:rgba(244,244,245,0.5); margin-bottom:4px;">No Product Data</div>
+            <div style="font-size:15px; font-weight:600; color:#5F6368; margin-bottom:4px;">No Product Data</div>
             <div style="font-size:12px;">Upload inventory and sales data to see performance</div>
         </div>
         """, unsafe_allow_html=True)

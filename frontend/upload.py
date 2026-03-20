@@ -37,9 +37,9 @@ def show_upload():
     st.markdown("""
     <div class="upload-zone">
         <div style="text-align:center; margin-bottom:8px;">
-            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(139,92,246,0.3));">📁</span>
+            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(50,121,249,0.2));">📁</span>
         </div>
-        <div style="text-align:center; color:rgba(244,244,245,0.4); font-size:13px;">
+        <div style="text-align:center; color:#9AA0A6; font-size:13px;">
             Drag & drop or browse to upload your inventory file
         </div>
     </div>
@@ -88,9 +88,9 @@ def show_upload():
     st.markdown("""
     <div class="upload-zone delay-2">
         <div style="text-align:center; margin-bottom:8px;">
-            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(34,211,238,0.3));">📊</span>
+            <span style="font-size:36px; filter:drop-shadow(0 0 12px rgba(50,121,249,0.2));">📊</span>
         </div>
-        <div style="text-align:center; color:rgba(244,244,245,0.4); font-size:13px;">
+        <div style="text-align:center; color:#9AA0A6; font-size:13px;">
             Drag & drop or browse to upload your sales file
         </div>
     </div>

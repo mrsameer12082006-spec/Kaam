@@ -63,21 +63,21 @@ def show_insights():
         st.markdown(f"""
         <div class="glass-card delay-2" style="margin-bottom:24px; position:relative; overflow:hidden;">
             <div style="position:absolute; top:0; right:0; width:200px; height:200px;
-                        background:radial-gradient(circle, rgba(52,211,153,0.08), transparent 70%);
+                        background:radial-gradient(circle, rgba(30,142,62,0.06), transparent 70%);
                         pointer-events:none;"></div>
             <div style="display:flex; align-items:center; gap:18px; position:relative; z-index:1;">
                 <div style="
                     font-size:40px;
                     width:68px; height:68px;
                     display:flex; align-items:center; justify-content:center;
-                    background:rgba(52,211,153,0.1);
-                    border:1px solid rgba(52,211,153,0.2);
+                    background:rgba(30,142,62,0.08);
+                    border:1px solid rgba(30,142,62,0.15);
                     border-radius:18px;
                 ">🏆</div>
                 <div>
-                    <div style="font-size:11px; color:rgba(244,244,245,0.35); text-transform:uppercase;
+                    <div style="font-size:11px; color:#9AA0A6; text-transform:uppercase;
                                 letter-spacing:1.5px; font-weight:700;">Top Selling Product</div>
-                    <div style="font-size:26px; font-weight:800; color:#34d399; margin-top:4px;
+                    <div style="font-size:26px; font-weight:700; color:#1E8E3E; margin-top:4px;
                                 letter-spacing:-0.5px;">{top_product}</div>
                 </div>
             </div>
@@ -86,13 +86,13 @@ def show_insights():
 
         # Recommendation cards
         recommendations = [
-            ("📦", "rgba(52,211,153,0.1)", "rgba(52,211,153,0.15)", "Stock Up on Winners",
+            ("📦", "rgba(30,142,62,0.08)", "rgba(30,142,62,0.12)", "Stock Up on Winners",
              "Allocate more shelf space and maintain higher stock levels for your best-selling items to maximize revenue potential."),
-            ("🏷️", "rgba(251,191,36,0.1)", "rgba(251,191,36,0.15)", "Clear Slow Movers",
+            ("🏷️", "rgba(249,171,0,0.08)", "rgba(249,171,0,0.12)", "Clear Slow Movers",
              "Bundle deals, flash sales, or seasonal promotions can help move aging inventory and recover tied-up capital."),
-            ("🔍", "rgba(251,113,133,0.1)", "rgba(251,113,133,0.15)", "Watch Critical Items",
+            ("🔍", "rgba(217,48,37,0.08)", "rgba(217,48,37,0.12)", "Watch Critical Items",
              "Set up automated alerts for products approaching reorder points to prevent costly stockouts."),
-            ("📊", "rgba(139,92,246,0.1)", "rgba(139,92,246,0.15)", "Weekly Category Review",
+            ("📊", "rgba(50,121,249,0.08)", "rgba(50,121,249,0.12)", "Weekly Category Review",
              "Review category performance every week to spot emerging demand shifts and adjust purchasing ahead of trends."),
         ]
 
@@ -109,9 +109,9 @@ def show_insights():
     else:
         st.markdown("""
         <div class="glass-card" style="text-align:center; padding:52px 20px;">
-            <div style="font-size:52px; margin-bottom:14px; filter:drop-shadow(0 0 16px rgba(139,92,246,0.2));">📭</div>
-            <div style="font-size:18px; font-weight:700; color:#f4f4f5; margin-bottom:6px;">No Data Available</div>
-            <div style="font-size:13px; color:rgba(244,244,245,0.35); max-width:360px; margin:0 auto;">
+            <div style="font-size:52px; margin-bottom:14px; filter:drop-shadow(0 0 16px rgba(50,121,249,0.15));">📭</div>
+            <div style="font-size:18px; font-weight:700; color:#121317; margin-bottom:6px;">No Data Available</div>
+            <div style="font-size:13px; color:#9AA0A6; max-width:360px; margin:0 auto;">
                 Upload inventory and sales data to unlock personalized AI-powered recommendations.
             </div>
         </div>
@@ -133,7 +133,7 @@ def show_insights():
     for i, (icon, tip) in enumerate(tips):
         st.markdown(f"""
         <div class="rec-card delay-{i+1}">
-            <div class="rec-icon" style="background:rgba(96,165,250,0.08); border:1px solid rgba(96,165,250,0.15);">{icon}</div>
+            <div class="rec-icon" style="background:rgba(50,121,249,0.06); border:1px solid rgba(50,121,249,0.1);">{icon}</div>
             <div class="rec-text">{tip}</div>
         </div>
         """, unsafe_allow_html=True)
