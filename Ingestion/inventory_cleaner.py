@@ -1,4 +1,4 @@
-from data_cleaner import clean_data
+from Ingestion.data_cleaner import clean_data
 
 
 def clean_inventory(df):

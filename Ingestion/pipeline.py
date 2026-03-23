@@ -12,9 +12,9 @@ try:
 except Exception:
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from data_uploader import load_file
-    from schema_validator import validate_schema
-    from data_cleaner import clean_data
+    from Ingestion.data_uploader import load_file
+    from Ingestion.schema_validator import validate_schema
+    from Ingestion.data_cleaner import clean_data
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parent

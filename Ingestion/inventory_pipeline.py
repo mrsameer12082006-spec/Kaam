@@ -1,7 +1,7 @@
 from pathlib import Path
-from data_uploader import load_file
-from inventory_validator import validate_inventory_schema
-from inventory_cleaner import clean_inventory
+from Ingestion.data_uploader import load_file
+from Ingestion.inventory_validator import validate_inventory_schema
+from Ingestion.inventory_cleaner import clean_inventory
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = PACKAGE_ROOT / "data" / "processed"

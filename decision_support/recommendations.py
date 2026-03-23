@@ -1,6 +1,6 @@
 import pandas as pd
-from stock_alerts import generate_stock_alerts
-from reorder_logic import generate_reorder_recommendations
+from decision_support.stock_alerts import generate_stock_alerts
+from decision_support.reorder_logic import generate_reorder_recommendations
 
 
 def generate_recommendations(df: pd.DataFrame) -> pd.DataFrame:

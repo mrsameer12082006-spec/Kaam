@@ -1,7 +1,7 @@
 from pathlib import Path
-from data_uploader import load_file
-from sales_validator import validate_sales_schema
-from sales_cleaner import clean_sales
+from Ingestion.data_uploader import load_file
+from Ingestion.sales_validator import validate_sales_schema
+from Ingestion.sales_cleaner import clean_sales
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = PACKAGE_ROOT / "data" / "processed"

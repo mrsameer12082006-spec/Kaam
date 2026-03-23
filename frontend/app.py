@@ -1,14 +1,21 @@
+import sys
+import os
+from pathlib import Path
+_project_root = str(Path(__file__).resolve().parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 import streamlit as st
-from products import show_products
-from trends import show_trends
-from layout import set_layout
-from navigation import top_navigation
-from home import show_home
-from upload import show_upload
-from dashboard import show_dashboard
-from insights import show_insights
-from stock_alerts import show_stock_alerts
-from visualizations import show_visualizations
+from frontend.products import show_products
+from analytics.trends import show_trends
+from frontend.layout import set_layout
+from frontend.navigation import top_navigation
+from frontend.home import show_home
+from frontend.upload import show_upload
+from frontend.dashboard import show_dashboard
+from analytics.insights import show_insights
+from decision_support.stock_alerts import show_stock_alerts
+from visualization.visualizations import show_visualizations
 import sys
 from pathlib import Path
 
@@ -17,7 +24,7 @@ project_root = Path(__file__).resolve().parents[1]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from analytics_runner import run_analytics
+from analytics.analytics_runner import run_analytics
 
 # Always run analytics fresh to ensure decision_support data is included
 # This runs once per session (Streamlit caches session_state across reruns)

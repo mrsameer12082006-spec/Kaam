@@ -1,3 +1,10 @@
+import sys
+import os
+from pathlib import Path
+_project_root = str(Path(__file__).resolve().parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 """
 Analytics Runner Module
 
@@ -17,10 +24,10 @@ for p in [str(project_dir), str(project_root)]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from demand_analysis import aggregate_product_demand, aggregate_category_demand, aggregate_top_products
-from trend_analysis import aggregate_daily_trends
-from kpi_calculator import compute_kpi_summary
-from recommendations import generate_recommendations
+from analytics.demand_analysis import aggregate_product_demand, aggregate_category_demand, aggregate_top_products
+from analytics.trend_analysis import aggregate_daily_trends
+from analytics.kpi_calculator import compute_kpi_summary
+from decision_support.recommendations import generate_recommendations
 
 def load_processed_data():
     """

@@ -23,7 +23,7 @@ def handler(request):
     the request to the running Streamlit server.
     """
     # Launch Streamlit pointing to app.py in the project root
-    app_path = os.path.join(project_root, "app.py")
+    app_path = os.path.join(project_root, "frontend", "app.py")
     
     process = subprocess.Popen(
         [

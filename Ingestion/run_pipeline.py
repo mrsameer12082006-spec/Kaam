@@ -1,3 +1,10 @@
+import sys
+import os
+from pathlib import Path
+_project_root = str(Path(__file__).resolve().parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 from pathlib import Path
 import sys
 
@@ -12,7 +19,7 @@ except Exception:
     # script-mode: ensure package folder is on sys.path so local imports work.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import data_uploader, data_cleaner, schema_validator, pipeline
-    from pipeline import process_inventory_file
+    from Ingestion.pipeline import process_inventory_file
 
 
 def main():
