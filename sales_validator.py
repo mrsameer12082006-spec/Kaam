@@ -1,5 +1,5 @@
 import pandas as pd
-from .sales_schema import SALES_SCHEMA
+from sales_schema import SALES_SCHEMA
 
 
 def validate_sales_schema(df):

@@ -1,4 +1,4 @@
-from ..schema_validator import validate_schema
+from schema_validator import validate_schema
 
 
 def validate_inventory_schema(df):

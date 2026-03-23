@@ -19,7 +19,8 @@ process_sales_file = None
 run_analytics = None
 
 try:
-    from Ingestion import process_inventory_file, process_sales_file
+    from inventory_pipeline import process_inventory_file
+    from sales_pipeline import process_sales_file
 except Exception:
     pass
 

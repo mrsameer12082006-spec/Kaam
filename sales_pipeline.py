@@ -1,9 +1,9 @@
 from pathlib import Path
-from ..data_uploader import load_file
-from .sales_validator import validate_sales_schema
-from .sales_cleaner import clean_sales
+from data_uploader import load_file
+from sales_validator import validate_sales_schema
+from sales_cleaner import clean_sales
 
-PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+PACKAGE_ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = PACKAGE_ROOT / "data" / "processed"
 OUTPUT_FILE = OUTPUT_PATH / "sales_cleaned.csv"
 
