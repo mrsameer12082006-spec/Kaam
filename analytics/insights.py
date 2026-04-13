@@ -1,139 +1,121 @@
+"""
+Insights page UI - displays actionable recommendations and stock alerts.
+"""
+
 import streamlit as st
 import pandas as pd
 
-def show_insights():
-    results = st.session_state.get("analytics_results", {})
 
-    st.markdown('<div class="page-title">💡 Insights & Recommendations</div>', unsafe_allow_html=True)
+def show_insights():
+    """Display actionable insights including stock alerts and recommendations."""
+    
+    results = st.session_state.get("analytics_results", {})
+    
+    st.markdown('<div class="page-title">💡 Smart Insights & Recommendations</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="page-subtitle">Data-driven intelligence to optimize your inventory strategy</div>',
+        '<div class="page-subtitle">AI-powered recommendations to optimize your inventory</div>',
         unsafe_allow_html=True,
     )
-
-    product_demand = results.get("product_demand", pd.DataFrame())
-    kpis = results.get("kpis", {})
-
-    # Classify demand
-    if not product_demand.empty:
-        avg_quantity = product_demand["totalQuantity"].mean()
-        high_demand = len(product_demand[product_demand["totalQuantity"] > avg_quantity * 1.5])
-        medium_demand = len(
-            product_demand[
-                (product_demand["totalQuantity"] <= avg_quantity * 1.5)
-                & (product_demand["totalQuantity"] >= avg_quantity * 0.5)
-            ]
-        )
-        low_demand = len(product_demand[product_demand["totalQuantity"] < avg_quantity * 0.5])
-        critical = kpis.get("slow_moving_count", 0)
-    else:
-        high_demand = 0
-        medium_demand = 0
-        low_demand = 0
-        critical = 0
-
-    # ===== DEMAND CARDS =====
-    col1, col2, col3, col4 = st.columns(4)
-
-    insight_cards = [
-        ("🔥", "High Demand", str(high_demand), "metric-green", col1),
-        ("⚡", "Medium Demand", str(medium_demand), "metric-blue", col2),
-        ("❄️", "Low Demand", str(low_demand), "metric-orange", col3),
-        ("🚨", "Critical", str(critical), "metric-red", col4),
-    ]
-
-    for i, (icon, label, value, color_class, col) in enumerate(insight_cards):
-        with col:
-            st.markdown(f"""
-            <div class="metric-card {color_class} delay-{i+1}">
-                <div class="metric-icon">{icon}</div>
-                <div class="metric-value">{value}</div>
-                <div class="metric-label">{label}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<div style='height:36px'></div>", unsafe_allow_html=True)
-
-    # ===== RECOMMENDATIONS =====
-    st.markdown('<div class="section-header">🎯 Smart Recommendations</div>', unsafe_allow_html=True)
-
-    if not product_demand.empty:
-        top_product = kpis.get("top_selling_product", "")
-
-        # Top seller card
-        st.markdown(f"""
-        <div class="glass-card delay-2" style="margin-bottom:24px; position:relative; overflow:hidden;">
-            <div style="position:absolute; top:0; right:0; width:200px; height:200px;
-                        background:radial-gradient(circle, rgba(30,142,62,0.06), transparent 70%);
-                        pointer-events:none;"></div>
-            <div style="display:flex; align-items:center; gap:18px; position:relative; z-index:1;">
-                <div style="
-                    font-size:40px;
-                    width:68px; height:68px;
-                    display:flex; align-items:center; justify-content:center;
-                    background:rgba(30,142,62,0.08);
-                    border:1px solid rgba(30,142,62,0.15);
-                    border-radius:18px;
-                ">🏆</div>
-                <div>
-                    <div style="font-size:11px; color:#9AA0A6; text-transform:uppercase;
-                                letter-spacing:1.5px; font-weight:700;">Top Selling Product</div>
-                    <div style="font-size:26px; font-weight:700; color:#1E8E3E; margin-top:4px;
-                                letter-spacing:-0.5px;">{top_product}</div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Recommendation cards
-        recommendations = [
-            ("📦", "rgba(30,142,62,0.08)", "rgba(30,142,62,0.12)", "Stock Up on Winners",
-             "Allocate more shelf space and maintain higher stock levels for your best-selling items to maximize revenue potential."),
-            ("🏷️", "rgba(249,171,0,0.08)", "rgba(249,171,0,0.12)", "Clear Slow Movers",
-             "Bundle deals, flash sales, or seasonal promotions can help move aging inventory and recover tied-up capital."),
-            ("🔍", "rgba(217,48,37,0.08)", "rgba(217,48,37,0.12)", "Watch Critical Items",
-             "Set up automated alerts for products approaching reorder points to prevent costly stockouts."),
-            ("📊", "rgba(50,121,249,0.08)", "rgba(50,121,249,0.12)", "Weekly Category Review",
-             "Review category performance every week to spot emerging demand shifts and adjust purchasing ahead of trends."),
-        ]
-
-        for i, (icon, bg, border_bg, title, desc) in enumerate(recommendations):
-            st.markdown(f"""
-            <div class="rec-card delay-{i+3}">
-                <div class="rec-icon" style="background:{bg}; border:1px solid {border_bg};">{icon}</div>
-                <div class="rec-text">
-                    <strong>{title}</strong><br>
-                    {desc}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-    else:
+    
+    # Get recommendation data from analytics results
+    stock_recommendations = results.get("stock_recommendations", pd.DataFrame())
+    
+    if stock_recommendations.empty:
         st.markdown("""
-        <div class="glass-card" style="text-align:center; padding:52px 20px;">
-            <div style="font-size:52px; margin-bottom:14px; filter:drop-shadow(0 0 16px rgba(50,121,249,0.15));">📭</div>
-            <div style="font-size:18px; font-weight:700; color:#121317; margin-bottom:6px;">No Data Available</div>
-            <div style="font-size:13px; color:#9AA0A6; max-width:360px; margin:0 auto;">
-                Upload inventory and sales data to unlock personalized AI-powered recommendations.
-            </div>
+        <div style="text-align:center; padding:60px 20px; color:#9AA0A6;">
+            <div style="font-size:44px; margin-bottom:10px;">🤔</div>
+            <div style="font-size:15px; font-weight:600; color:#5F6368; margin-bottom:4px;">No Insights Available Yet</div>
+            <div style="font-size:12px;">Upload inventory and sales data to get personalized recommendations</div>
         </div>
         """, unsafe_allow_html=True)
-
-    st.markdown("<div style='height:36px'></div>", unsafe_allow_html=True)
-
-    # ===== BEST PRACTICES =====
-    st.markdown('<div class="section-header">📚 Best Practices</div>', unsafe_allow_html=True)
-
-    tips = [
-        ("✅", "Maintain inventory levels above reorder points to prevent costly stockouts"),
-        ("📈", "Analyze sales trends at least weekly — catch demand shifts before competitors do"),
-        ("🧮", "Replace gut-feel ordering with data-driven quantity calculations"),
-        ("🔄", "Reassess reorder points quarterly as customer demand patterns evolve"),
-        ("📋", "Standardize CSV formatting across your team for consistent analytics"),
-    ]
-
-    for i, (icon, tip) in enumerate(tips):
+        return
+    
+    # ===== ALERT SUMMARY CARDS =====
+    st.markdown('<div class="section-header">🚨 Stock Health Overview</div>', unsafe_allow_html=True)
+    
+    low_stock_count = len(stock_recommendations[stock_recommendations["Alert Type"] == "Low Stock"]) if "Alert Type" in stock_recommendations.columns else 0
+    overstock_count = len(stock_recommendations[stock_recommendations["Alert Type"] == "Overstock"]) if "Alert Type" in stock_recommendations.columns else 0
+    healthy_count = len(stock_recommendations[stock_recommendations["Alert Type"] == "Healthy"]) if "Alert Type" in stock_recommendations.columns else 0
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
         st.markdown(f"""
-        <div class="rec-card delay-{i+1}">
-            <div class="rec-icon" style="background:rgba(50,121,249,0.06); border:1px solid rgba(50,121,249,0.1);">{icon}</div>
-            <div class="rec-text">{tip}</div>
+        <div class="glass-card" style="text-align:center; padding:20px 16px; background:rgba(217,48,37,0.06);">
+            <div style="font-size:28px; margin-bottom:4px;">🔴</div>
+            <div style="font-size:20px; font-weight:700; color:#D93025;">{low_stock_count}</div>
+            <div style="font-size:11px; color:#5F6368; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Low Stock Items</div>
         </div>
         """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="glass-card" style="text-align:center; padding:20px 16px; background:rgba(249,171,0,0.06);">
+            <div style="font-size:28px; margin-bottom:4px;">📦</div>
+            <div style="font-size:20px; font-weight:700; color:#F9AB00;">{overstock_count}</div>
+            <div style="font-size:11px; color:#5F6368; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Overstock Items</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div class="glass-card" style="text-align:center; padding:20px 16px; background:rgba(30,142,62,0.06);">
+            <div style="font-size:28px; margin-bottom:4px;">✅</div>
+            <div style="font-size:20px; font-weight:700; color:#1E8E3E;">{healthy_count}</div>
+            <div style="font-size:11px; color:#5F6368; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Healthy Items</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
+    
+    # ===== INSIGHTS BY CATEGORY =====
+    if "Alert Type" in stock_recommendations.columns:
+        # Low Stock Items - Priority 1
+        low_stock_items = stock_recommendations[stock_recommendations["Alert Type"] == "Low Stock"]
+        if not low_stock_items.empty:
+            st.markdown('<div class="section-header">⚠️ Critical Action Required - Low Stock Items</div>', unsafe_allow_html=True)
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.dataframe(
+                low_stock_items[["Product Name", "Current Stock", "Reorder Point", "Recommendation"]] 
+                if "Product Name" in low_stock_items.columns 
+                else low_stock_items,
+                use_container_width=True,
+                hide_index=True
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+        
+        # Overstock Items
+        overstock_items = stock_recommendations[stock_recommendations["Alert Type"] == "Overstock"]
+        if not overstock_items.empty:
+            st.markdown('<div class="section-header">📦 Optimization Opportunity - Overstock Items</div>', unsafe_allow_html=True)
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.dataframe(
+                overstock_items[["Product Name", "Current Stock", "Reorder Point", "Recommendation"]] 
+                if "Product Name" in overstock_items.columns 
+                else overstock_items,
+                use_container_width=True,
+                hide_index=True
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+    
+    # ===== FULL RECOMMENDATIONS TABLE =====
+    st.markdown('<div class="section-header">📋 Complete Stock Analysis</div>', unsafe_allow_html=True)
+    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+    st.dataframe(stock_recommendations, use_container_width=True, hide_index=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # ===== KEY METRICS =====
+    if "Stock Value" in stock_recommendations.columns:
+        st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
+        st.markdown('<div class="section-header">💰 Inventory Valuation</div>', unsafe_allow_html=True)
+        
+        total_stock_value = stock_recommendations["Stock Value"].sum()
+        total_potential_revenue = stock_recommendations["Potential Revenue"].sum() if "Potential Revenue" in stock_recommendations.columns else 0
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Inventory Value", f"${total_stock_value:,.2f}")
+        with col2:
+            st.metric("Potential Revenue", f"${total_potential_revenue:,.2f}")

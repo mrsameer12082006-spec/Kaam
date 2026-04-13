@@ -9,6 +9,7 @@ def top_navigation():
     pages = [
         ("🏠", "Home"),
         ("📂", "Upload"),
+        ("💳", "POS"),
         ("📊", "Overview"),
         ("📦", "Products"),
         ("📈", "Trends"),

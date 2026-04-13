@@ -6,15 +6,15 @@ from pathlib import Path
 # script-mode (python run_pipeline.py) by attempting package-relative imports
 # and falling back to local imports when needed.
 try:
-    from .data_uploader import load_file
+    from .file_uploader import load_file
     from .schema_validator import validate_schema
     from .data_cleaner import clean_data
 except Exception:
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from Ingestion.data_uploader import load_file
-    from Ingestion.schema_validator import validate_schema
-    from Ingestion.data_cleaner import clean_data
+    from file_uploader import load_file
+    from schema_validator import validate_schema
+    from data_cleaner import clean_data
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parent

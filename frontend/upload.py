@@ -13,14 +13,14 @@ def _ensure_paths_in_sys():
 
 _ensure_paths_in_sys()
 
-# Import pipeline modules — gracefully handle missing Ingestion package (e.g. on Vercel)
+# Import pipeline modules — gracefully handle missing ingestion package (e.g. on Vercel)
 process_inventory_file = None
 process_sales_file = None
 run_analytics = None
 
 try:
-    from Ingestion.inventory_pipeline import process_inventory_file
-    from Ingestion.sales_pipeline import process_sales_file
+    from ingestion.inventory.inventory_pipeline import process_inventory_file
+    from ingestion.sales.sales_pipeline import process_sales_file
 except Exception:
     pass
 
@@ -35,6 +35,13 @@ def show_upload():
     st.markdown(
         '<div class="page-subtitle">Import your inventory and sales CSV/Excel files for instant analysis</div>',
         unsafe_allow_html=True,
+    )
+
+    # Info about POS system
+    st.info(
+        "💡 **Tip**: Use the **💳 POS** page for real-time sales entry with barcode scanning. "
+        "Both CSV upload and POS automatically sync to your dashboard.",
+        icon="ℹ️"
     )
 
     # ===== INVENTORY UPLOAD =====

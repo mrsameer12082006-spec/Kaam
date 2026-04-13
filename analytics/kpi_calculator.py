@@ -11,7 +11,7 @@ import pandas as pd
 def compute_kpi_summary(df: pd.DataFrame) -> dict:
     """
     Compute high-level inventory KPIs from raw sales data.
-
+              
     INPUT:
     Expects a clean Pandas DataFrame with columns:
     - product (string)

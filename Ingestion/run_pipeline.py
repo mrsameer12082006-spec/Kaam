@@ -1,10 +1,3 @@
-import sys
-import os
-from pathlib import Path
-_project_root = str(Path(__file__).resolve().parent.parent)
-if _project_root not in sys.path:
-    sys.path.insert(0, _project_root)
-
 from pathlib import Path
 import sys
 
@@ -12,14 +5,14 @@ import sys
 # Fall back to local imports when the file is executed directly (python run_pipeline.py).
 try:
     # package-mode
-    from . import data_cleaner, data_uploader, schema_validator
+    from . import data_cleaner, file_uploader, schema_validator
     from .pipeline import process_inventory_file
     from . import pipeline
 except Exception:
     # script-mode: ensure package folder is on sys.path so local imports work.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    import data_uploader, data_cleaner, schema_validator, pipeline
-    from Ingestion.pipeline import process_inventory_file
+    import file_uploader, data_cleaner, schema_validator, pipeline
+    from pipeline import process_inventory_file
 
 
 def main():
@@ -34,7 +27,7 @@ def main():
     except ValueError as e:
         print("Pipeline validation failed:", e)
         print("Attempting: load -> clean -> validate -> save")
-        df = data_uploader.load_file(sample)
+        df = file_uploader.load_file(sample)
         cleaned = data_cleaner.clean_data(df)
         try:
             schema_validator.validate_schema(cleaned)

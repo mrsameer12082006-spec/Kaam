@@ -25,6 +25,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from analytics.analytics_runner import run_analytics
+from pos.pos_page import show_pos_page
 
 # Always run analytics fresh to ensure decision_support data is included
 # This runs once per session (Streamlit caches session_state across reruns)
@@ -148,4 +149,6 @@ else:
         show_stock_alerts()
     elif page == "📉 Charts":
         show_visualizations()
+    elif page == "💳 POS":
+        show_pos_page()
 
